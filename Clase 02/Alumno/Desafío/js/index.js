@@ -1,6 +1,5 @@
 var gender = prompt('Ingrese su genero')
 var age = prompt('Ingrese su edad')
-var mensage = ''
 
 switch (gender) {
   case 'mujer':
