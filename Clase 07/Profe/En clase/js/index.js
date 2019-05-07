@@ -34,6 +34,9 @@
 
 // console.log(parsedKitty)
 
+
+
+
 // var localFavoriteDessert = localStorage.getItem('favoriteDessert')
 
 // var favoriteDessert
@@ -47,6 +50,10 @@
 // }
 
 // var message = 'Tu postre preferido es ' + favoriteDessert
+
+
+
+
 
 // var kitty = {
 //   name: 'Princess Caroline',
