@@ -111,3 +111,11 @@ var stringyKitty = JSON.stringify(parsedKitty)
 // Piso el valor en el LS
 
 localStorage.setItem('kittyHouse', stringyKitty)
+
+var text = 'Hola pato'
+
+showMessage(text)
+
+function showMessage (message) {
+  console.log(message)
+}
