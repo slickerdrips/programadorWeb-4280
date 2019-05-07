@@ -5,6 +5,7 @@
 ```html
 <div>
   <h1 id="title">Título viejo</h1>
+  
   <p id="text">Texto viejo</p>
 </div>
 ```
