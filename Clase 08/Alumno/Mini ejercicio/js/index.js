@@ -11,5 +11,7 @@ var oldText = document.getElementById('old-text')
 setTimeout(function() {
   var newText = prompt('Ingresá un nuevo texto')
 
+  
+
   oldText.innerHTML = newText
-}, 1000)
+}, 6000)
