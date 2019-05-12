@@ -1,5 +1,5 @@
 
-var operation = prompt('Ingrese la operación a realizar, sum, res, mul o div')
+var operation = prompt('Elija una operación matemática a realizar (sum, res, mul, div)')
 
 
 var number1 = prompt('Ingerese el primer número')
@@ -14,10 +14,9 @@ do {
   parsedNumber2 = parseFloat(number2, 10)
 } while (operation === 'div' && parsedNumber2 === 0)
 
-// Creo una variable para guardar el resultado
+
 var result
 
-// Comparo la operación elegida por el usuario para calcular el resultado
 switch (operation) {
   case 'sum':
     result = parsedNumber1 + parsedNumber2
@@ -32,13 +31,8 @@ switch (operation) {
     result = parsedNumber1 / parsedNumber2
     break
   default:
-    result = 'Operación incorrecta'
+    result = 'Operación inválida'
     break
 }
 
-// Creo una variable donde voy a guardar el mensaje
-// que muestro como resultado de la operación
-var message = 'El resultado de la ' + operation + ' es: ' + result
-
-// Muestro el mensaje en consola
-console.log(message)
+console.log(var message = 'El resultado de la operación es: ' + result)
