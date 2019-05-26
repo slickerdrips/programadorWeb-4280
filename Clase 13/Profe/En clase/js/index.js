@@ -1,4 +1,4 @@
-$(document).ready(function () {
+  $(document).ready(function () {
   console.log('The winter is gone')
 
   // # 13 Más eventos y métodos de jQuery [Modulo C]
