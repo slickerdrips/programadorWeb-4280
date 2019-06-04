@@ -1,4 +1,10 @@
-cvv{}w3 
+var testList = ['CARLOS','GERONIMO','NICOLAS','LUCAS']
+
+
+
+
+
+
 
 // var testlistJSONd = JSON.stringify(testList)
 

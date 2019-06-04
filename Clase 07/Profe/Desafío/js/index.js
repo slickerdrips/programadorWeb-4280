@@ -26,6 +26,7 @@ var studentsList = getLocalList('studentsList')
 if (studentsList) {
   // Muestro el resultado de la función
   console.log(studentsList)
+  
   if (studentsList.length) {
     console.log('Tiene guardados ' + studentsList.length + ' estudiantes')
   } else {
