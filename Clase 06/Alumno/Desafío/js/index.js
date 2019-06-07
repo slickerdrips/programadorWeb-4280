@@ -25,4 +25,4 @@ console.log(includesText('Princess Carolyn', 'Pr'))
 console.log(includesText(55, 'Pr'))
 
 
-// como puedo hacer para que además de decirme si es true or false me lo devuelva en una oración? intenté poner un console log pero se me rompe la función
+// como puedo hacer para que además de decirme si es true or false me lo devuelva en una oración? intenté poner un console log pero se me rompe la función ==== se ponen en funciones separadas - si da true o false en una y el mensaje en un if afuera.
