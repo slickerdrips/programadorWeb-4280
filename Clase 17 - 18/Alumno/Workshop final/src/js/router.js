@@ -1,34 +1,30 @@
 import crossroads from 'crossroads'
-import contactControler from './controlers/contactControler'
-import localStorage from './controlers/localStorageController'
+import contactController from './controllers/contactController'
+import localStorageController from './controllers/localStorageController'
 
-function router() {
-  crossroads.addRoute('', function() {
-    console.log('Home page')
-    $('#root').load('./partials/home.html', function() {
-      console.log('Se cargo la home')
+function router () {
+  crossroads.addRoute('', function () {
+    $('#root').load('./partials/home.html', function () {
+      console.log('Home page')
     })
   })
 
-  crossroads.addRoute('#/contact', function() {
-    console.log('Contact page')
-    $('#root').load('./partials/contact.html', contactControler)
-  })
-
-  crossroads.addRoute('#/people', function() {
-    console.log('People page')
-    $('#root').load('./partials/people.html', function() {
-      console.log('Se cargo la people page')
+  crossroads.addRoute('#/people', function () {
+    $('#root').load('./partials/people.html', function () {
+      console.log('People page')
     })
   })
 
-  crossroads.addRoute('#/local-storage', function() {
-    console.log('LS page')
-    $('#root').load('./partials/local-storage.html', localStorageController())
+  crossroads.addRoute('#/local-storage', function () {
+    $('#root').load('./partials/local-storage.html', localStorageController)
+  })
+
+  crossroads.addRoute('#/contact', function () {
+    $('#root').load('./partials/contact.html', contactController)
   })
 
   // En cada cambio del # va a verificar las rutas
-  $(window).on('hashchange', function() {
+  $(window).on('hashchange', function () {
     crossroads.parse(window.location.hash)
   })
 
