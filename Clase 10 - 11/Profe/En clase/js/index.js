@@ -27,6 +27,10 @@ for (var i = 0; i < studentsList.length; i++) {
   mainListNode.appendChild(liStudent)
 }
 
+// la función "createStudentNode" está codeada más abajo. Sirve para crear el newStudent, dependiendo de los datos que ponga el usuario. Luego este newStudent es appended en la mainList en el Dom.
+
+
+
 // Respondo al evento on blur con la función que valida el campo nombre y DNI
 firstNameInput.onblur = validateRequired
 dniInput.onblur = validateDni
@@ -236,6 +240,8 @@ function createStudentNode (newStudent) {
   liNode.className = 'list-group-item'
 
   var fullName = ''
+
+  // Este código sirve para que exista un full name aunque no se aclare firstname o lastname (evitar el undefined)
 
   if (newStudent.firstName && newStudent.lastName) {
     fullName = newStudent.firstName + ', ' + newStudent.lastName
