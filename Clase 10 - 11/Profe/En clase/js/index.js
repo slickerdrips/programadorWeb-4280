@@ -100,7 +100,7 @@ function addStudent () {
   // Agrego el estudiante en memoria
   studentsList.push(student)
 
-  // Cero el nodo estudiante
+  // Creo el nodo estudiante
   var liStudent = createStudentNode(student)
 
   // Agrego el nodo a la lista del DOM
@@ -229,6 +229,7 @@ function getLocalList (key) {
  * @param { Student } newStudent
  * @returns Node
  */
+
 function createStudentNode (newStudent) {
   // Creo el nodo li
   var liNode = document.createElement('li')
@@ -315,7 +316,7 @@ function searchStudentIndexByText (text, studentsList) {
  * includesText busca coincidencias parciales del primer texto
  * dentro del segundo
  * @param {*} text texto a buscar
- * @param {*} baseText texto donde se va a realizar la búsqueda
+ * @param {*} baseText texto donde se va a realizar la búsqueda. Esta variable no está definida pero en la función que se encuentra más arriba se aclara qué información se está usando, reemplazando basetext por student.firstname y student.lastname.
  * @returns {boolean} true si encuentra y false en caso contrario
  */
 function includesText (text, baseText) {
