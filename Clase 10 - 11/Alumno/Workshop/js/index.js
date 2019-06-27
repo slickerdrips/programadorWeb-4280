@@ -1,103 +1,44 @@
-    
-console.log('Primer workshop')
+console.log('1er Workshop')
 
 var studentsList = getLocalList('list')
 
-//datos del DOM
+// Nodos del DOM
+
 var firstNameInput = document.getElementById('firstName')
 var dniInput = document.getElementById('dni')
 var deleteDniInput = document.getElementById('deleteDni')
 var addStudentButton = document.getElementById('addStudentButton')
+var deleteStudentButton = document.getElementById('deleteStudentButton')
 var mainListNode = document.getElementById('mainList')
-var lastNameInput = document.getElementById('lastName')
 var emailInput = document.getElementById('email')
-var searchListNode = document.getElementById('searchList')
-var searchInput = document.getElementById('searchText')
+var lastNameInput = document.getElementById('lastName')
+var searchTextInput = document.getElementById('searchText')
 var searchStudentButton = document.getElementById('searchStudentButton')
+var searchListNode = document.getElementById('searchList')
 
-//Elementos del LS en el DOM
 for (var i = 0; i < studentsList.length; i++) {
   var student = studentsList[i]
   var liStudent = createStudentNode(student)
   mainListNode.appendChild(liStudent)
 }
 
-//Respondo al evento onblur con la funcion que valida el campo nombre y DNI
-firstNameInput.onblur = validateFirstName
+firstNameInput.onblur = validateRequired
 dniInput.onblur = validateDni
 emailInput.onblur = emailValidation
 
-//Con el botón validado, llamo a la función que agrega el estudiante
 addStudentButton.onclick = addStudent
 deleteStudentButton.onclick = deleteStudent
 searchStudentButton.onclick = searchStudent
 
-function searchStudent() {
-  var searchValue = searchInput.value
-  if (searchValue) {
-    var index = searchStudentIndexByText(searchValue, studentsList)
-    //LIMPIO LA LISTA DE BUSQUEDA POR SI HABIA ALGO ANTES
-    searchListNode.innerHTML = ''
-    if (index !== -1) {
-      console.log(index)
-      var searchStudent = studentsList[index]
-      var liSearch = createStudentNode(searchStudent)
-      searchListNode.appendChild(liSearch)
-    }
-  }
-
-  function searchStudentIndexByText(text, studentsList) {
-    var index = -1
-    for (var i = 0; i < studentsList.length; i++) {
-      var student = studentsList[i]
-      if (
-        includesText(text, student.firstName) ||
-        includesText(text, student.lastName)
-      ) {
-        index = i
-        break
-      }
-    }
-    return index
-  }
-
-
-/**
- * includesText busca coincidencias parciales del primer texto
- * dentro del segundo
- * @param {*} text texto a buscar
- * @param {*} baseText texto donde se va a realizar la búsqueda
- * @returns {boolean} true si encuentra y false en caso contrario
- */
-function includesText(text, baseText) {
-  // Valido que ambos parámetros sean string
-  if (typeof text === 'string' && typeof baseText === 'string') {
-    // Verifico si el primer parámetro se encuentra dentro del segundo
-    var textUpperCase = text.toUpperCase()
-    var baseTextUpperCase = baseText.toUpperCase()
-
-    if (baseTextUpperCase.indexOf(textUpperCase) !== -1) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    return false
-  }
-}
-
 function deleteStudent() {
-  //Busco el valor en el input a eliminar
   var dniValue = deleteDniInput.value
+
   if (dniValue) {
-    // Busco el indice en memoria
     var index = searchStudentIndexByDni(dniValue, studentsList)
 
     if (index !== -1) {
-      // Elimino en memoria
       studentsList.splice(index, 1)
 
-      // Actualizo la info del local storage con la info en memoria
       setLocalList('list', studentsList)
 
       var liNode = document.getElementById(dniValue)
@@ -106,96 +47,78 @@ function deleteStudent() {
 
       deleteDniInput.value = ''
     } else {
-      // alert('Usuario NO existente')
-      // deleteDniInput.value = ''
+      alert('Usuario NO existente')
     }
   }
 }
 
 function addStudent() {
-  //levanto los valores ya validados del form
   var firstNameValue = firstNameInput.value
   var dniValue = dniInput.value
   var emailValue = emailInput.value
   var lastNameValue = lastNameInput.value
 
-  //creo un objeto estudiante local
   var student = {
-    firstName: firstNameValue,
-    lastName: lastNameValue,
     dni: dniValue,
-    email: emailValue
+    firstName: firstNameValue,
+    email: emailValue,
+    lastName: lastNameValue
   }
 
-  //Agrego el estudiante en memoria (LS)
   studentsList.push(student)
-
-  //Agrego el estudiante en el DOM
   var liStudent = createStudentNode(student)
 
-  //Agrego el nodo a la lista
   mainListNode.appendChild(liStudent)
 
-  //Actualizo la info del LS con la info en memoria
-  setLocalList('list', studentsList)
+  setLocalList('listStudents', studentsList)
 
-  //Limpiamos el formulario una vez que lo agrega al LS
   firstNameInput.value = ''
-  lastNameInput.value = ''
   dniInput.value = ''
   emailInput.value = ''
+  lastNameInput.value = ''
 
-  //vuelvo a deshabilitar el botón
-  addStudentButton.disabled = true
-
-  //Saco las clases válidas
   firstNameInput.classList.remove('is-valid')
   dniInput.classList.remove('is-valid')
   emailInput.classList.remove('is-valid')
+
+  addStudentButton.disabled = true
 }
 
-function validateFirstName(event) {
-  var inputNode = event.target //target es la propiedad, y event es un nombre generico, puedo poner cualquier cosa. Me avisa en qué campo el usuario hizo click o escribió algo. Me guardo esto en la var inputNode para ver exactamente en qué elemento fue que el usuario hizo algo
+function validateRequired(event) {
+  var inputNode = event.target
 
-  var value = inputNode.value //Busco qué valor tenía el nodo en ese momento
+  var value = inputNode.value
 
   if (!value) {
-    //caso invalido
     inputNode.classList.add('is-invalid')
     inputNode.classList.remove('is-valid')
   } else {
-    //caso válido
-    inputNode.classList.remove('is-invalid')
     inputNode.classList.add('is-valid')
+    inputNode.classList.remove('is-invalid')
   }
   validateAddButton()
 }
 
 function validateDni(event) {
-  // Encuetro que nodo disparó el evento blur
   var inputNode = event.target
-
-  // Busco que valor tenía el nodo en ese momento
   var value = inputNode.value
+  var parsedValue = parseInt(value, 10)
+  var dniExists
 
-  // Trato de convertir a número
-  var parsedValue = parseInt(value, 10) //Trato de convertir a número
-
-  //verifico si existe el DNI en los datos guardados en local Storage
-  var dniExists = false
   if (searchStudentIndexByDni(value, studentsList) !== -1) {
     dniExists = true
+  } else {
+    dniExists = false
   }
 
   if (!value || isNaN(parsedValue) || parsedValue <= 0 || dniExists) {
-    //caso inválido
     inputNode.classList.add('is-invalid')
     inputNode.classList.remove('is-valid')
   } else {
-    //caso válido
-    inputNode.classList.remove('is-invalid')
     inputNode.classList.add('is-valid')
+    inputNode.classList.remove('is-invalid')
   }
+
   validateAddButton()
 }
 
@@ -216,71 +139,62 @@ function emailValidation(event) {
   validateAddButton()
 }
 
-//Función para validar si todos los campos son validos y habilitar el boton
 function validateAddButton() {
-  var validInputs = document.getElementsByClassName('is-valid') //Busco todos los campos válidos
+  var validInputs = document.getElementsByClassName('is-valid')
 
   if (validInputs.length !== 3) {
-    //como tengo 2 campos, me tengo que fijar que los campos válidos que encuentra sean todos (osea 2) para habilitar el botón
     addStudentButton.disabled = true
   } else {
     addStudentButton.disabled = false
   }
 }
 
-//Guarda un array en formato JSON en el localStorage
 function setLocalList(key, list) {
-  // Verifico los parámetros recibidos
   if (typeof key === 'string' && Array.isArray(list)) {
-    // Convierto a JSON el array
-    var stringyTestList = JSON.stringify(list)
-    // Guardo en el localStorage pisando la key
-    localStorage.setItem(key, stringyTestList)
+    var strList = JSON.stringify(list)
+    localStorage.setItem(key, strList)
   }
 }
 
-//Busca en la localStorage si hay algo, me lo trae en formato JS y si no hay nada me trae un aray vacío
 function getLocalList(key) {
   if (typeof key === 'string') {
     var localList = localStorage.getItem(key)
     if (localList) {
-      var parsedLocalList = JSON.parse(localList)
-      return parsedLocalList
+      var parsedList = JSON.parse(localList)
+      return parsedList
     } else {
       return []
     }
   }
 }
 
-//devuelve un nodo li con los datos del alumno pasado por parámetro
 function createStudentNode(newStudent) {
-  // Creo el nodo li
+  var liNode = document.createElement('li')
 
-  var li = document.createElement('li')
+  liNode.id = newStudent.dni
+
+  liNode.className = 'list-group-item'
 
   var fullName = ''
 
   if (newStudent.firstName && newStudent.lastName) {
-    fullName = newStudent.firstName + ' ' + newStudent.lastName
+    fullName = newStudent.firstName + ', ' + newStudent.lastName
   } else if (newStudent.firstName) {
     fullName = newStudent.firstName
   } else if (newStudent.lastName) {
     fullName = newStudent.lastName
   }
 
-  li.innerHTML =
+  liNode.innerHTML =
     '<h1>' +
     fullName +
-    '</h1><h3>DNI: ' +
+    '</h1><h3>DNI:' +
     newStudent.dni +
-    '</h3><p>E-mail: ' +
+    '</h3><p>E-mail:' +
     newStudent.email +
     '</p>'
-  li.className = 'list-group-item'
-  li.id = newStudent.dni
 
-  // Devuelvo solo el nodo con todos sus datos
-  return li
+  return liNode
 }
 
 function searchStudentIndexByDni(dni, studentsList) {
@@ -294,4 +208,45 @@ function searchStudentIndexByDni(dni, studentsList) {
   }
   return index
 }
+function searchStudent() {
+  var text = searchTextInput.value
 
+  var index = searchStudentIndexByText(text, studentsList)
+
+  searchListNode.innerHTML = ''
+
+  if (index !== -1) {
+    var searchStudent = studentsList[index]
+    var liSearch = createStudentNode(searchStudent)
+    searchListNode.appendChild(liSearch)
+  }
+}
+
+function searchStudentIndexByText(text, studentsList) {
+  var index = -1
+  for (var i = 0; i < studentsList.length; i++) {
+    var student = studentsList[i]
+    if (
+      includesText(text, student.firstName) ||
+      includesText(text, student.lastName)
+    ) {
+      index = i
+      break
+    }
+  }
+  return index
+}
+
+function includesText(text, baseText) {
+  if (typeof text === 'string' && typeof baseText === 'string') {
+    var textUpperCase = text.toUpperCase()
+    var baseTextUpperCase = baseText.toUpperCase()
+    if (baseTextUpperCase.indexOf(textUpperCase) !== -1) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
