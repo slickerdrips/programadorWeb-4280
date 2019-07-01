@@ -1,5 +1,6 @@
+import { postData } from '../utils/getDataFromApi'
+
 function contactController() {
-  // Busco los nodos que voy a utilizar
   var firstNameInputNode = $('#firstName')
   var emailInputNode = $('#email')
   var commentsInputNode = $('#comments')
@@ -12,8 +13,6 @@ function contactController() {
   commentsInputNode.one('blur', validateEmtpyField)
 
   /**
-   * validateEmtpyField es una función que el campo tenga un valor
-   *
    * @param {HTMLEvent} event
    */
 
@@ -90,10 +89,24 @@ function contactController() {
     validateButton()
   }
 
-  /**
-   * validateButton habilita el botón de submit si existen
-   * al menos cuatro nodos con la clase is-valid
-   */
+  submitButtonNode.click(function() {
+    var firstName = firstNameInputNode.val()
+    var email = emailInputNode.val()
+    var comments = commentsInputNode.val()
+
+    var data = {
+      firstName: firstName,
+      email: email,
+      comments: comments
+    }
+
+    postData('./simpleEmail.php', data, function(error, data) {
+      if (!error) {
+        window.location.hash = '#/contact/greetings'
+      }
+    })
+  })
+
   function validateButton() {
     var validInputNodes = $('.is-valid')
 

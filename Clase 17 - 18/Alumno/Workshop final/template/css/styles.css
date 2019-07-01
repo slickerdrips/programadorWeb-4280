@@ -1,6 +1,6 @@
 @font-face {
   font-family: Starwars;
-  src: local("Starwars"), url(../fonts/Starjedi.ttf);
+  src: local('Starwars'), url(../fonts/Starjedi.ttf);
   font-weight: bold;
 }
 
